@@ -1,35 +1,29 @@
---[[ Gravidade
-As ferramentas utilizadas são do repositório Windfield: https://github.com/a327ex/windfield 
-]]--
-
+--[[ Controle do movimento de personagens ]]
 
 function love.load()
-    wf = require "libraries/windfield"
-
-    world = wf.newWorld(0, 500)
-
-    player = world:newRectangleCollider(350, 100, 80, 80)
-    ground = world:newRectangleCollider(100, 400, 600, 100)
-    ground:setType('static')
+    player = {}
+    player.x = 400
+    player.y = 200
 end
 
 function love.update(dt)
-    local px, py = player:getLinearVelocity()
-    if love.keyboard.isDown('left') and px > -300 then
-        player:applyForce(-8000, 0)
-    elseif love.keyboard.isDown('right') and px < 300 then
-        player:applyForce(8000, 0)
+    if love.keyboard.isDown("right") then
+        player.x = player.x + 3
+    end
+    
+    if love.keyboard.isDown("left") then
+        player.x = player.x - 3
     end
 
-    world:update(dt)
+    if love.keyboard.isDown("down") then
+        player.y = player.y + 3
+    end
+
+    if love.keyboard.isDown("up") then
+        player.y = player.y - 3
+    end
 end
 
 function love.draw()
-    world:draw()
-end
-
-function love.keypressed(key)
-    if key == 'up' then
-        player:applyLinearImpulse(0, -5000)
-    end
+    love.graphics.circle("fill", player.x, player.y, 100)
 end
